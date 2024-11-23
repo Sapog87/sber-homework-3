@@ -35,7 +35,8 @@ public class CountMapTest {
     @Test
     public void testRemove() {
         assertEquals(countMap.remove(5), 2);
-        assertEquals(countMap.getCount(5), 0);
+        assertEquals(countMap.remove(5), 1);
+        assertEquals(countMap.remove(5), 0);
         assertEquals(countMap.remove(11), 0);
     }
 
@@ -47,13 +48,15 @@ public class CountMapTest {
     @Test
     public void testAddAll() {
         CountMap<Integer> localCountMap = new CountMapImpl<>();
+        localCountMap.add(6);
+        localCountMap.add(10);
 
         localCountMap.addAll(countMap);
 
         assertEquals(localCountMap.size(), 3);
         assertEquals(localCountMap.getCount(5), 2);
-        assertEquals(localCountMap.getCount(6), 1);
-        assertEquals(localCountMap.getCount(10), 3);
+        assertEquals(localCountMap.getCount(6), 2);
+        assertEquals(localCountMap.getCount(10), 4);
         assertEquals(localCountMap.getCount(11), 0);
     }
 

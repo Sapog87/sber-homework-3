@@ -2,8 +2,6 @@ package org.sber.task1;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class CountMapImpl<V> implements CountMap<V> {
     private final Map<V, Integer> countValueStorage = new HashMap<>();
@@ -20,7 +18,10 @@ public class CountMapImpl<V> implements CountMap<V> {
 
     @Override
     public int remove(V value) {
-        return Objects.requireNonNullElse(countValueStorage.remove(value), 0);
+        Integer countBeforeDelete = countValueStorage.getOrDefault(value, 0);
+        if (countBeforeDelete > 0)
+            countValueStorage.put(value, countBeforeDelete - 1);
+        return countBeforeDelete;
     }
 
     @Override
@@ -37,9 +38,8 @@ public class CountMapImpl<V> implements CountMap<V> {
 
     @Override
     public Map<V, Integer> toMap() {
-        return countValueStorage
-                .entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return new HashMap<>(countValueStorage);
+
     }
 
     @Override
